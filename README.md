@@ -1,28 +1,154 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Uu9lUx8_)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=21969018&assignment_repo_type=AssignmentRepo)
-# NativeScript: Scan Inventory
+# NativeScript: Scan Inventory (Angular) — Inventory App
 
-## Cel
-Zbuduj podstawową aplikację w **NativeScript używając framework Angular**, która używa **natywnej funkcji** oraz **komunikuje się z API**, z **3–4 widokami**.
+## Cel projektu
+Zbudowanie podstawowej aplikacji mobilnej w **NativeScript + Angular**, która:
+- posiada **3 widoki** i nawigację,
+- używa **natywnej funkcji** (wibracja),
+- komunikuje się z **API** (min. 1 endpoint),
+- ma minimalną **walidację** formularza,
+- działa i testowana jest lokalnie na emulatorze/urządzeniu.
 
-## Zakres i wymagania funkcjonalne
-- **Natywna funkcja (min. 1):** wybierz i uzasadnij (np. aparat/kamera – skan/zdjęcie, pliki, geolokalizacja, latarka, wibracje).
-- **API (min. 1 endpoint):** pobranie listy elementów lub zapis nowego.
-- **Widoki (3–4):**
-  1. **Lista produktów** (nazwa, kod, mini-status).
-  2. **Szczegóły produktu** (opis, zdjęcie/skan, akcje: usuń/edytuj).
-  3. **Dodaj produkt** (formularz + akcja natywna, np. „zeskanuj/zdjęcie”).
-  4. *(Opcjonalnie)* **Ustawienia** (np. preferencje, tryb offline).
-- **Walidacja:** minimalna w formularzu (np. wymagane pola).
+---
 
-## Testowanie lokalne (w trakcie developmentu)
-- Uruchom na **urządzeniu/emulatorze**.
-- Pokaż: dodanie produktu z użyciem **natywnej funkcji** (np. zdjęcie/skan), pojawienie się na liście.
-- Pokaż komunikację z **API** (pobranie/zapis) i zachowanie przy błędach/uprawnieniach.
+## Funkcje aplikacji (co działa)
 
-## Definition of Done (DoD)
-- [ ] 3–4 widoki + nawigacja.
-- [ ] Co najmniej 1 **natywna funkcja**.
-- [ ] Integracja z **API** (GET/POST).
-- [ ] Walidacja formularza + podstawowa obsługa błędów.
-- [ ] Aktualizacja `README.md`, zrzuty ekranów, min. 3 commity.
+### Widoki (3)
+1. **Lista produktów**  
+   - wyświetla produkty (nazwa + kod),
+   - przejście do szczegółów po kliknięciu,
+   - przycisk dodania nowego produktu,
+   - przycisk pobrania przykładowych danych z API (opcjonalny, do zaliczenia wymogu API).
+
+2. **Szczegóły produktu**
+   - podgląd danych produktu (nazwa, kod),
+   - akcja: **Usuń** (z wibracją jako feedback),
+   - akcja: **Wróć** do listy.
+
+3. **Dodaj produkt**
+   - formularz: **nazwa** i **kod**,
+   - minimalna walidacja: pola wymagane,
+   - jeśli pola są puste → **wibracja** + brak zapisu,
+   - zapis produktu i powrót do listy.
+
+---
+
+## Wymagania z zadania — realizacja
+
+### ✅ Natywna funkcja (min. 1)
+**Wibracja telefonu (Vibrate)**:
+- użyta w formularzu dodawania produktu, gdy pola są puste,
+- użyta jako feedback po usunięciu produktu.
+
+**Uzasadnienie wyboru**:  
+Wibracja jest prostą, natywną formą informacji zwrotnej (haptic feedback). Poprawia UX w sytuacjach takich jak błąd walidacji lub wykonanie akcji (np. usunięcie), bez potrzeby dodatkowych okien dialogowych.
+
+**Plugin**:
+- `nativescript-vibrate`
+
+---
+
+### ✅ API (min. 1 endpoint)
+Aplikacja posiada komunikację z API poprzez `ApiService`.
+
+**Endpoint (GET)**:
+- przykładowo używany publiczny endpoint:
+  - `https://dummyjson.com/products?limit=10`
+
+**Cel**:
+- pobranie listy produktów z API i podmiana danych na liście produktów.
+
+**Obsługa błędów**:
+- przy braku internetu/błędzie API aplikacja nie przestaje działać (dane lokalne nadal są dostępne).
+
+---
+
+### ✅ Walidacja formularza
+W widoku **Dodaj produkt**:
+- `name` i `code` są wymagane,
+- jeśli puste → wibracja i brak zapisu.
+
+---
+
+### ✅ Nawigacja
+Routing Angular:
+- `/products` — lista
+- `/products/:id` — szczegóły
+- `/add` — dodaj produkt
+
+---
+
+## Struktura projektu (ważne pliki)
+
+### Routing
+- `src/app/app.routes.ts` — definicje tras
+
+### Moduł aplikacji
+- `src/app/app.module.ts` — importy (Forms, Router, HttpClient), bootstrap
+
+### Komponenty (widoki)
+- `src/app/products-list/*` — lista produktów
+- `src/app/product-detail/*` — szczegóły produktu
+- `src/app/add-product/*` — dodawanie produktu
+
+### Serwisy
+- `src/app/product.service.ts` — logika lokalnej listy produktów (BehaviorSubject)
+- `src/app/api.service.ts` — pobieranie danych z API (GET)
+
+### Start aplikacji
+- `src/main.ts`
+- `src/polyfills.ts`
+
+---
+
+## Jak uruchomić projekt lokalnie
+
+### Wymagania
+- Node.js + npm
+- NativeScript CLI
+- Android SDK (Android Studio) / emulator
+
+### Instalacja
+npm install
+
+### instalacja pluginu do wibracji
+ns plugin add nativescript-vibrate
+
+### Uruchomienie na Androidzie
+ns clean
+ns run android
+
+Testowanie lokalne (w trakcie developmentu)
+1) Test dodawania produktu + natywna funkcja
+
+Wejdź w Dodaj produkt
+
+Kliknij Zapisz bez wpisywania danych
+✅ telefon/emulator wykona wibrację i nie zapisze produktu
+
+Wpisz nazwę i kod → Zapisz
+✅ produkt pojawi się na liście
+
+2) Test listy i szczegółów
+
+Kliknij produkt na liście
+✅ przejście do szczegółów
+
+Kliknij Usuń
+✅ produkt znika z listy + wibracja
+
+3) Test komunikacji z API
+
+Na liście kliknij Pobierz z API
+✅ produkty z API pojawią się na liście
+
+Wyłącz internet i kliknij ponownie
+✅ aplikacja nie crashuje (pozostaje ostatni stan danych)
+
+### Screenshots
+![d](https://github.com/user-attachments/assets/4c86b574-1b1c-494c-bf88-e38c2d9e4ab2)
+![c](https://github.com/user-attachments/assets/3cf619e3-73fa-4891-b4b4-dbea22c54078)
+![b](https://github.com/user-attachments/assets/701d4ce7-24ae-4b73-bb38-43a8a8f9e4fb)
+![a](https://github.com/user-attachments/assets/0069f50f-f30e-4d38-9276-effaba1e0e40)
+
+
+Autor: Dominik
