@@ -1,0 +1,13 @@
+<ActionBar title="Szczegóły"></ActionBar>
+
+<StackLayout class="p-16" spacing="12">
+  <Label *ngIf="!product" text="Nie znaleziono produktu." class="muted"></Label>
+
+  <StackLayout *ngIf="product">
+    <Label [text]="'Nazwa: ' + product.name" class="title"></Label>
+    <Label [text]="'Kod: ' + product.code" class="muted"></Label>
+
+    <Button text="🗑 Usuń" (tap)="remove()"></Button>
+    <Button text="↩ Wróć" (tap)="back()"></Button>
+  </StackLayout>
+</StackLayout>

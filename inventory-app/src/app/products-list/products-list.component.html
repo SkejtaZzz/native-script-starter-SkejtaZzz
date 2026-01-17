@@ -1,0 +1,20 @@
+<ActionBar title="Produkty"></ActionBar>
+
+<StackLayout class="p-16" spacing="12">
+  <Button text="➕ Dodaj produkt" (tap)="goAdd()"></Button>
+  <Button text="🌐 Pobierz z API (opcjonalnie)" (tap)="loadFromApi()"></Button>
+
+  <Label *ngIf="products.length === 0" text="Brak produktów." class="muted"></Label>
+
+  <ListView [items]="products" height="500">
+    <ng-template let-item="item">
+      <GridLayout columns="*, auto" class="list-item" (tap)="openDetails(item)">
+        <StackLayout col="0">
+          <Label [text]="'Nazwa: ' + item.name" class="title"></Label>
+          <Label [text]="'Kod: ' + item.code" class="muted"></Label>
+        </StackLayout>
+        <Label col="1" text=">" class="chev"></Label>
+      </GridLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

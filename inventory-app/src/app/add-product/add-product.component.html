@@ -1,0 +1,14 @@
+<ActionBar title="Dodaj produkt"></ActionBar>
+
+<StackLayout class="p-16" spacing="12">
+  <Label text="Nazwa"></Label>
+  <TextField [(ngModel)]="name" hint="np. Jogurt"></TextField>
+
+  <Label text="Kod"></Label>
+  <TextField [(ngModel)]="code" hint="np. JGR-123"></TextField>
+
+  <Button text="💾 Zapisz" (tap)="save()"></Button>
+  <Button text="↩ Wróć" (tap)="cancel()"></Button>
+
+  <Label text="* Jeśli pola są puste, telefon zawibruje." class="muted"></Label>
+</StackLayout>

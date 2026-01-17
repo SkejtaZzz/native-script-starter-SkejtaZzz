@@ -1,0 +1,6 @@
+.p-16 { padding: 16; }
+.muted { opacity: 0.7; }
+.title { font-size: 18; font-weight: 600; }
+
+.list-item { padding: 12; border-bottom-width: 1; border-bottom-color: #dddddd; }
+.chev { font-size: 18; opacity: 0.6; vertical-align: middle; }
